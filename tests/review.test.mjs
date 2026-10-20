@@ -1,0 +1,10 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {reviewReservation,approvalConflict} from '../src/services/reviewLogic.js';
+const pending={room_id:'MR001',reservation_date:'2099-01-01',start_time:'10:00',end_time:'11:00',status:'pending',user_id:'user-a'};
+test('approval changes pending request and records reviewer',()=>{const r=reviewReservation({a:pending},'a','approve','admin@example.com','OK',100);assert.equal(r.a.status,'approved');assert.equal(r.a.reviewed_by,'admin@example.com');assert.equal(pending.status,'pending')});
+test('overlapping approved booking blocks approval',()=>assert.throws(()=>reviewReservation({a:pending,b:{...pending,status:'approved'}},'a','approve','admin', '',100),/อนุมัติไม่ได้/));
+test('two concurrent approval retries cannot approve overlapping requests',()=>{const initial={a:pending,b:{...pending}};const first=reviewReservation(initial,'a','approve','one','',100);assert.throws(()=>reviewReservation(first,'b','approve','two','',100))});
+test('pending requests do not reserve slots; adjacent, cancelled and other rooms do not conflict',()=>{for(const item of [{...pending},{...pending,status:'cancelled'},{...pending,status:'approved',end_time:'10:00'},{...pending,status:'approved',room_id:'MR002'}])assert.equal(approvalConflict({b:item},pending,'a'),false)});
+test('rejection and cancellation preserve booking fields and record notes',()=>{for(const [action,status] of [['reject','rejected'],['cancel','cancelled']]){const r=reviewReservation({a:pending},'a',action,'admin','reason',100).a;assert.equal(r.status,status);assert.equal(r.user_id,'user-a');assert.equal(r.admin_note,'reason')}});
+test('stale status and past requests cannot be approved',()=>{assert.throws(()=>reviewReservation({a:{...pending,status:'cancelled'}},'a','approve','admin'));assert.throws(()=>reviewReservation({a:{...pending,reservation_date:'2000-01-01'}},'a','approve','admin'))});
