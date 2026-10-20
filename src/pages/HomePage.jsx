@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../components/layout/Navbar";
 import RoomCard from "../components/rooms/RoomCard";
-import { getRooms } from "../services/roomService";
+import { watchRooms } from "../services/roomService";
 
 function HomePage() {
   const [rooms, setRooms] = useState([]);
@@ -11,21 +11,7 @@ function HomePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  useEffect(() => {
-    async function loadRooms() {
-      try {
-        const data = await getRooms();
-        setRooms(data);
-      } catch (err) {
-        console.error(err);
-        setError("ไม่สามารถโหลดข้อมูลห้องประชุมได้");
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    loadRooms();
-  }, []);
+  useEffect(() => watchRooms(data=>{setRooms(data);setLoading(false)},()=>{setError('ไม่สามารถโหลดข้อมูลห้องประชุมได้');setLoading(false)}),[]);
 
   const filteredRooms = useMemo(() => {
     return rooms.filter((room) => {
@@ -45,7 +31,7 @@ function HomePage() {
   }, [rooms, keyword, roomType]);
 
   const availableCount = rooms.filter(
-    (room) => room.status?.toLowerCase() === "available"
+    (room) => (room.display_status || room.status)?.toLowerCase() === "available"
   ).length;
 
   return (

@@ -13,5 +13,22 @@ const row={
 for(const k of [...immutable,'status','cancelled_at'])row[k]={'.validate':true};
 row.$other={'.validate':false};
 const rules={rules:{'.read':false,'.write':false,meeting_rooms:{'.read':true,'.write':false},reservations:{'.read':`(${admin}) || (auth != null && query.orderByChild == 'user_id' && query.equalTo == auth.uid)`,'.write':`(${admin}) && newData.exists()`,'.indexOn':['user_id'],'$id':row},users:{'.read':admin,'$uid':{'.read':'auth != null && auth.uid == $uid','.write':false}}}};
+
+const projectionFields=['room_id','room_key','reservation_date','start_time','end_time','start_at','end_at','status'];
+const linkedIndex=projectionFields.map(k=>"newData.parent().parent().child('room_bookings').child($id).child('"+k+"').val() == newData.child('"+k+"').val()").join(' && ');
+row['.validate']='('+row['.validate']+') && (('+admin+') || ('+linkedIndex+'))';
+row['.validate']='('+row['.validate']+") && (!(data.child('status').val() == 'pending' && newData.child('status').val() == 'approved') || root.child('meeting_rooms').child(newData.child('room_key').val()).child('status').val() == 'available')";
+const roomWrite='('+admin+') && data.parent().exists() && newData.exists()';
+rules.rules.meeting_rooms={'.read':true,'$room':{
+ status:{'.write':roomWrite,'.validate':"newData.isString() && (newData.val() == 'available' || newData.val() == 'unavailable' || newData.val() == 'maintenance')"},
+ status_note:{'.write':roomWrite,'.validate':"newData.isString() && newData.val().length <= 500"},
+ status_updated_by:{'.write':roomWrite,'.validate':"newData.val() == auth.token.email"},
+ status_updated_at:{'.write':roomWrite,'.validate':"newData.isNumber() && newData.val() >= now - 60000 && newData.val() <= now + 60000"}
+}};
+const futureSource="newData.parent().parent().child('reservations').child($id)";
+const projection={'.write':'auth != null && newData.exists() && (('+admin+') || '+futureSource+".child('user_id').val() == auth.uid)",'.validate':"newData.hasChildren(['"+projectionFields.join("','")+"']) && "+projectionFields.map(k=>"newData.child('"+k+"').val() == "+futureSource+".child('"+k+"').val()").join(' && '),'$other':{'.validate':false}};
+for(const k of projectionFields)projection[k]={'.validate':true};
+rules.rules.room_bookings={'.read':true,'.indexOn':['room_key'],'$id':projection};
+
 fs.writeFileSync(new URL('../database.rules.json',import.meta.url),JSON.stringify(rules,null,2)+'\n');
 console.log('Generated database rules for '+admins.length+' verified admin emails');

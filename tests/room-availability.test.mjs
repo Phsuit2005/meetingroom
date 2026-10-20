@@ -1,0 +1,14 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {roomAvailability,publicBooking} from '../src/services/roomAvailability.js';
+const room={id:'room_001',room_id:'MR001',status:'available'};
+const booking={room_key:'room_001',room_id:'MR001',reservation_date:'2099-01-01',start_time:'10:00',end_time:'11:00',start_at:4070929200000,end_at:4070932800000,status:'approved'};
+const now=Date.parse('2098-01-01T00:00:00Z');
+test('approved future booking makes room badge red/booked',()=>assert.equal(roomAvailability(room,{a:booking},{now}).state,'booked'));
+test('pending request is visibly unavailable while awaiting approval',()=>assert.equal(roomAvailability(room,{a:{...booking,status:'pending'}},{now}).state,'pending'));
+test('cancellation, rejection and expiration release room',()=>{for(const status of ['cancelled','rejected'])assert.equal(roomAvailability(room,{a:{...booking,status}},{now}).state,'available');assert.equal(roomAvailability(room,{a:booking},{now:booking.end_at}).state,'available')});
+test('other rooms and dates do not block requested time',()=>{assert.equal(roomAvailability(room,{a:{...booking,room_id:'MR002',room_key:'room_002'}},{now}).state,'available');assert.equal(roomAvailability(room,{a:booking},{now,date:'2099-01-02',start:'10:00',end:'11:00'}).canRequest,true)});
+test('overlapping selected time blocked, adjacent or other time allowed',()=>{assert.equal(roomAvailability(room,{a:booking},{now,date:booking.reservation_date,start:'10:30',end:'11:30'}).canRequest,false);for(const [start,end]of [['09:00','10:00'],['11:00','12:00']])assert.equal(roomAvailability(room,{a:booking},{now,date:booking.reservation_date,start,end}).canRequest,true)});
+test('manual closure and maintenance override time and preserve public note',()=>{for(const status of ['unavailable','maintenance']){const a=roomAvailability({...room,status,status_note:'ซ่อมอุปกรณ์'},{a:booking},{now});assert.equal(a.state,status);assert.equal(a.canRequest,false);assert.equal(a.note,'ซ่อมอุปกรณ์')}});
+test('reopening room does not clear existing bookings',()=>assert.equal(roomAvailability({...room,status:'available'},{a:booking},{now}).state,'booked'));
+test('public schedule excludes email, user id, purpose and admin notes',()=>{const p=publicBooking({...booking,user_email:'private@example.com',user_id:'secret',purpose:'Private',admin_note:'Private'});assert.deepEqual(Object.keys(p).sort(),['room_id','room_key','reservation_date','start_time','end_time','start_at','end_at','status'].sort());assert.ok(!JSON.stringify(p).includes('private'))});

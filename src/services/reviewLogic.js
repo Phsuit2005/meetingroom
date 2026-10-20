@@ -1,6 +1,6 @@
 export function overlaps(a,b){return a.start_time < b.end_time && a.end_time > b.start_time;}
 export function approvalConflict(records, candidate, candidateId) {
-  return Object.entries(records||{}).some(([id,r])=>id!==candidateId && r.status==='approved' && r.room_id===candidate.room_id && r.reservation_date===candidate.reservation_date && overlaps(r,candidate));
+  return Object.entries(records||{}).some(([id,r])=>id!==candidateId && r.status==='approved' && ((r.room_key && candidate.room_key)?r.room_key===candidate.room_key:r.room_id===candidate.room_id) && r.reservation_date===candidate.reservation_date && overlaps(r,candidate));
 }
 export function reviewReservation(records,id,action,reviewer,note='',now=Date.now()) {
   const current=records?.[id];
