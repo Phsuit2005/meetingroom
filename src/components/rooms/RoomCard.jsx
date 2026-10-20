@@ -1,0 +1,4 @@
+import {Link} from 'react-router-dom';
+import {getRoomImage} from '../../utils/roomImage';
+const types={small:'ห้องขนาดเล็ก',medium:'ห้องขนาดกลาง',large:'ห้องขนาดใหญ่'},statuses={available:'พร้อมใช้งาน',maintenance:'ปิดปรับปรุง',unavailable:'ไม่พร้อมใช้งาน'};
+export default function RoomCard({room}){const status=room.status?.toLowerCase();return <article className="meeting-room-card"><div className="meeting-room-image"><img src={getRoomImage(room)} alt={room.name_th} loading="lazy"/><span className={`meeting-status ${status}`}>{statuses[status]||room.status}</span></div><div className="meeting-room-body"><span className="meeting-room-type">{types[room.room_type]||room.room_type}</span><h3>{room.name_th}</h3><p className="meeting-room-en">{room.name_en}</p><div className="meeting-meta"><span>👥 {room.capacity} คน</span><span>📍 {room.location}</span></div><Link to={`/rooms/${room.id}`} className="meeting-detail-button">ดูรายละเอียดและจอง →</Link></div></article>}

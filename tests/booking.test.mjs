@@ -1,0 +1,10 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {validateBooking,hasConflict,bangkokToday} from '../src/services/bookingLogic.js';
+const room={status:'available',capacity:8,open_time:'08:00',close_time:'18:00'};
+const booking={room_id:'MR001',reservation_date:'2099-01-01',start_time:'10:00',end_time:'11:00',attendees:2,purpose:'ประชุมทีม'};
+test('valid booking is accepted',()=>assert.doesNotThrow(()=>validateBooking(booking,room)));
+test('overlapping booking is blocked including pending',()=>{for(const status of ['approved','pending'])assert.equal(hasConflict({x:{...booking,status}},booking),true)});
+test('adjacent bookings, other rooms and cancelled slots do not conflict',()=>{assert.equal(hasConflict({x:{...booking,end_time:'10:00',status:'approved'}},booking),false);assert.equal(hasConflict({x:{...booking,room_id:'MR002',status:'approved'}},booking),false);assert.equal(hasConflict({x:{...booking,status:'cancelled'}},booking),false)});
+test('past dates, reversed times, over-capacity and closed hours are rejected',()=>{for(const change of [{reservation_date:'2000-01-01'},{end_time:'09:00'},{attendees:9},{attendees:0},{start_time:'07:00'},{end_time:'19:00'},{purpose:' '}])assert.throws(()=>validateBooking({...booking,...change},room))});
+test('Bangkok date remains correct across UTC midnight',()=>assert.equal(bangkokToday(new Date('2026-10-20T18:00:00Z')),'2026-10-21'));

@@ -1,0 +1,5 @@
+import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { signOut } from 'firebase/auth';
+import { auth } from '../../services/firebase';
+import { useAuth } from '../../services/AuthContext';
+export default function Navbar(){const {user}=useAuth();const navigate=useNavigate();return <header className="main-navbar"><Link to="/" className="main-logo"><div className="main-logo-icon">🏢</div><div><strong>Online Meeting Room</strong><small>Reservation System</small></div></Link><nav className="main-menu" aria-label="เมนูหลัก"><NavLink to="/">หน้าแรก</NavLink><NavLink to="/rooms">ห้องประชุม</NavLink><NavLink to="/my-reservations">การจองของฉัน</NavLink><NavLink to="/presentation">นำเสนอโครงงาน</NavLink></nav>{user?<button className="main-login" onClick={async()=>{await signOut(auth);navigate('/')}}>ออกจากระบบ</button>:<Link to="/login" className="main-login">เข้าสู่ระบบ / สมัครสมาชิก</Link>}</header>}
