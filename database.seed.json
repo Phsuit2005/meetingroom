@@ -1,0 +1,327 @@
+{
+  "meeting_rooms": {
+    "room_001": {
+      "capacity": 6,
+      "close_time": "18:00",
+      "facilities": [
+        "Projector",
+        "Whiteboard",
+        "WiFi",
+        "HDMI"
+      ],
+      "floor": 2,
+      "image_detail": "room_001_detail.webp",
+      "image_thumbnail": "room_001_thumb.webp",
+      "location": "อาคาร A ชั้น 2",
+      "name_en": "Arun Meeting Room",
+      "name_th": "ห้องประชุมอรุณ",
+      "open_time": "08:00",
+      "room_id": "MR001",
+      "room_type": "small",
+      "source": "Student Own Work",
+      "status": "available",
+      "status_note": "",
+      "status_updated_at": 1792485867289,
+      "status_updated_by": "s67122250081@ssru.ac.th"
+    },
+    "room_002": {
+      "capacity": 12,
+      "close_time": "18:00",
+      "facilities": [
+        "Smart TV",
+        "Whiteboard",
+        "WiFi",
+        "Video Conference"
+      ],
+      "floor": 3,
+      "image_detail": "room_002_detail.webp",
+      "image_thumbnail": "room_002_thumb.webp",
+      "location": "อาคาร A ชั้น 3",
+      "name_en": "Chao Phraya Meeting Room",
+      "name_th": "ห้องประชุมเจ้าพระยา",
+      "open_time": "08:00",
+      "room_id": "MR002",
+      "room_type": "medium",
+      "source": "Student Own Work",
+      "status": "available"
+    },
+    "room_003": {
+      "capacity": 30,
+      "close_time": "18:00",
+      "facilities": [
+        "Projector",
+        "Microphone",
+        "Speakers",
+        "WiFi",
+        "Video Conference"
+      ],
+      "floor": 4,
+      "image_detail": "room_003_detail.webp",
+      "image_thumbnail": "room_003_thumb.webp",
+      "location": "อาคาร A ชั้น 4",
+      "name_en": "Rattanakosin Conference Room",
+      "name_th": "ห้องประชุมรัตนโกสินทร์",
+      "open_time": "08:00",
+      "room_id": "MR003",
+      "room_type": "large",
+      "source": "Student Own Work",
+      "status": "available"
+    },
+    "room_004": {
+      "capacity": 10,
+      "close_time": "17:00",
+      "facilities": [
+        "Smart TV",
+        "Whiteboard",
+        "WiFi"
+      ],
+      "floor": 2,
+      "image_detail": "room_004_detail.webp",
+      "image_thumbnail": "room_004_thumb.webp",
+      "location": "อาคาร B ชั้น 2",
+      "name_en": "Suan Nan Meeting Room",
+      "name_th": "ห้องประชุมสวนนันท์",
+      "open_time": "08:00",
+      "room_id": "MR004",
+      "room_type": "medium",
+      "source": "Student Own Work",
+      "status": "available"
+    },
+    "room_005": {
+      "capacity": 4,
+      "close_time": "17:00",
+      "facilities": [
+        "Monitor",
+        "Whiteboard",
+        "WiFi"
+      ],
+      "floor": 1,
+      "image_detail": "room_005_detail.webp",
+      "image_thumbnail": "room_005_thumb.webp",
+      "location": "อาคาร B ชั้น 1",
+      "name_en": "Pikul Meeting Room",
+      "name_th": "ห้องประชุมพิกุล",
+      "open_time": "09:00",
+      "room_id": "MR005",
+      "room_type": "small",
+      "source": "Student Own Work",
+      "status": "available"
+    },
+    "room_006": {
+      "capacity": 40,
+      "close_time": "18:00",
+      "facilities": [
+        "Projector",
+        "Microphone",
+        "Speakers",
+        "WiFi",
+        "Video Conference"
+      ],
+      "floor": 5,
+      "image_detail": "room_006_detail.webp",
+      "image_thumbnail": "room_006_thumb.webp",
+      "location": "อาคาร B ชั้น 5",
+      "name_en": "Kaew Chao Chom Room",
+      "name_th": "ห้องประชุมแก้วเจ้าจอม",
+      "open_time": "08:00",
+      "room_id": "MR006",
+      "room_type": "large",
+      "source": "Student Own Work",
+      "status": "available",
+      "status_note": "",
+      "status_updated_at": 1792483581194,
+      "status_updated_by": "s67122250081@ssru.ac.th"
+    },
+    "room_007": {
+      "capacity": 16,
+      "close_time": "17:30",
+      "facilities": [
+        "Smart TV",
+        "Whiteboard",
+        "WiFi",
+        "HDMI"
+      ],
+      "floor": 3,
+      "image_detail": "room_007_detail.webp",
+      "image_thumbnail": "room_007_thumb.webp",
+      "location": "อาคาร C ชั้น 3",
+      "name_en": "Srisuda Meeting Room",
+      "name_th": "ห้องประชุมศรีสุดา",
+      "open_time": "08:30",
+      "room_id": "MR007",
+      "room_type": "medium",
+      "source": "Student Own Work",
+      "status": "available"
+    },
+    "room_008": {
+      "capacity": 50,
+      "close_time": "20:00",
+      "facilities": [
+        "Projector",
+        "Microphone",
+        "Speakers",
+        "Stage",
+        "WiFi"
+      ],
+      "floor": 1,
+      "image_detail": "room_008_detail.webp",
+      "image_thumbnail": "room_008_thumb.webp",
+      "location": "อาคาร C ชั้น 1",
+      "name_en": "Wang Suan Sunandha Hall",
+      "name_th": "ห้องประชุมวังสวนสุนันทา",
+      "open_time": "08:00",
+      "room_id": "MR008",
+      "room_type": "large",
+      "source": "Student Own Work",
+      "status": "available"
+    },
+    "room_009": {
+      "capacity": 8,
+      "close_time": "18:00",
+      "facilities": [
+        "Smart TV",
+        "Whiteboard",
+        "WiFi"
+      ],
+      "floor": 2,
+      "image_detail": "room_009_detail.webp",
+      "image_thumbnail": "room_009_thumb.webp",
+      "location": "อาคาร D ชั้น 2",
+      "name_en": "Ratchaphruek Meeting Room",
+      "name_th": "ห้องประชุมราชพฤกษ์",
+      "open_time": "08:00",
+      "room_id": "MR009",
+      "room_type": "small",
+      "source": "Student Own Work",
+      "status": "available"
+    },
+    "room_010": {
+      "capacity": 20,
+      "close_time": "18:00",
+      "facilities": [
+        "Projector",
+        "Whiteboard",
+        "WiFi",
+        "Video Conference"
+      ],
+      "floor": 4,
+      "image_detail": "room_010_detail.webp",
+      "image_thumbnail": "room_010_thumb.webp",
+      "location": "อาคาร D ชั้น 4",
+      "name_en": "Budsaba Meeting Room",
+      "name_th": "ห้องประชุมบุษบา",
+      "open_time": "08:00",
+      "room_id": "MR010",
+      "room_type": "medium",
+      "source": "Student Own Work",
+      "status": "available"
+    },
+    "room_011": {
+      "capacity": 6,
+      "close_time": "18:00",
+      "facilities": [
+        "Monitor",
+        "Whiteboard",
+        "WiFi"
+      ],
+      "floor": 3,
+      "image_detail": "room_011_detail.webp",
+      "image_thumbnail": "room_011_thumb.webp",
+      "location": "อาคาร E ชั้น 3",
+      "name_en": "Inthanin Meeting Room",
+      "name_th": "ห้องประชุมอินทนิล",
+      "open_time": "08:00",
+      "room_id": "MR011",
+      "room_type": "small",
+      "source": "Student Own Work",
+      "status": "available",
+      "status_note": "",
+      "status_updated_at": 1792483585786,
+      "status_updated_by": "s67122250081@ssru.ac.th"
+    },
+    "room_012": {
+      "capacity": 14,
+      "close_time": "18:00",
+      "facilities": [
+        "Smart TV",
+        "WiFi",
+        "Video Conference"
+      ],
+      "floor": 2,
+      "image_detail": "room_012_detail.webp",
+      "image_thumbnail": "room_012_thumb.webp",
+      "location": "อาคาร E ชั้น 2",
+      "name_en": "Chor Kaew Meeting Room",
+      "name_th": "ห้องประชุมช่อแก้ว",
+      "open_time": "09:00",
+      "room_id": "MR012",
+      "room_type": "medium",
+      "source": "Student Own Work",
+      "status": "available"
+    },
+    "room_013": {
+      "capacity": 8,
+      "close_time": "17:00",
+      "facilities": [
+        "Monitor",
+        "Whiteboard",
+        "WiFi",
+        "HDMI"
+      ],
+      "floor": 1,
+      "image_detail": "room_013_detail.webp",
+      "image_thumbnail": "room_013_thumb.webp",
+      "location": "อาคาร F ชั้น 1",
+      "name_en": "Saiyud Meeting Room",
+      "name_th": "ห้องประชุมสายหยุด",
+      "open_time": "08:00",
+      "room_id": "MR013",
+      "room_type": "small",
+      "source": "Student Own Work",
+      "status": "available"
+    },
+    "room_014": {
+      "capacity": 18,
+      "close_time": "18:00",
+      "facilities": [
+        "Projector",
+        "Whiteboard",
+        "WiFi",
+        "HDMI"
+      ],
+      "floor": 3,
+      "image_detail": "room_014_detail.webp",
+      "image_thumbnail": "room_014_thumb.webp",
+      "location": "อาคาร F ชั้น 3",
+      "name_en": "Chamchuri Meeting Room",
+      "name_th": "ห้องประชุมจามจุรี",
+      "open_time": "08:00",
+      "room_id": "MR014",
+      "room_type": "medium",
+      "source": "Student Own Work",
+      "status": "available"
+    },
+    "room_015": {
+      "capacity": 35,
+      "close_time": "19:00",
+      "facilities": [
+        "Projector",
+        "Microphone",
+        "Speakers",
+        "WiFi",
+        "Video Conference"
+      ],
+      "floor": 2,
+      "image_detail": "room_015_detail.webp",
+      "image_thumbnail": "room_015_thumb.webp",
+      "location": "อาคาร G ชั้น 2",
+      "name_en": "Supannika Conference Room",
+      "name_th": "ห้องประชุมสุพรรณิการ์",
+      "open_time": "08:00",
+      "room_id": "MR015",
+      "room_type": "large",
+      "source": "Student Own Work",
+      "status": "available"
+    }
+  }
+}
