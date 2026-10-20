@@ -36,6 +36,10 @@ export async function adminReviewReservation(id,action,note=''){
  const user=auth.currentUser;if(!hasAdminAccess(user))throw new Error('ไม่มีสิทธิ์จัดการคำขอจอง');
  const target=ref(db,'reservations');const snapshot=await get(target);const current=snapshot.val()?.[id];
  if(action==='approve'&&current){const room=await getRoomById(current.room_key);if(!room||room.status!=='available')throw new Error('ห้องนี้ไม่พร้อมใช้งานหรือปิดปรับปรุง จึงอนุมัติไม่ได้')}
+ if(action!=='approve'){
+  const next=reviewReservation(snapshot.val(),id,action,user.email,note)[id];
+  await update(ref(db),{['reservations/'+id]:next,['room_bookings/'+id]:publicBooking(next)});return;
+ }
  let reason='';const result=await runTransaction(target,records=>{try{return reviewReservation(records,id,action,user.email,note)}catch(e){reason=e.message;return;}},{applyLocally:false});
  if(!result.committed)throw new Error(reason||'บันทึกไม่สำเร็จ กรุณาลองใหม่');
  try{await syncBookingIndex(id)}catch{throw new Error('บันทึกสถานะคำขอแล้ว แต่ตารางห้องยังไม่อัปเดต กรุณาตรวจการเชื่อมต่อและรีเฟรชหน้า')}

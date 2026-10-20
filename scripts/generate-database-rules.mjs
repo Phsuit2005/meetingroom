@@ -16,7 +16,7 @@ const rules={rules:{'.read':false,'.write':false,meeting_rooms:{'.read':true,'.w
 
 const projectionFields=['room_id','room_key','reservation_date','start_time','end_time','start_at','end_at','status'];
 const linkedIndex=projectionFields.map(k=>"newData.parent().parent().child('room_bookings').child($id).child('"+k+"').val() == newData.child('"+k+"').val()").join(' && ');
-row['.validate']='('+row['.validate']+') && (('+admin+') || ('+linkedIndex+'))';
+row['.validate']='('+row['.validate']+') && ((('+admin+") && newData.child('status').val() == 'approved') || ("+linkedIndex+'))';
 row['.validate']='('+row['.validate']+") && (!(data.child('status').val() == 'pending' && newData.child('status').val() == 'approved') || root.child('meeting_rooms').child(newData.child('room_key').val()).child('status').val() == 'available')";
 const roomWrite='('+admin+') && data.parent().exists() && newData.exists()';
 rules.rules.meeting_rooms={'.read':true,'$room':{
