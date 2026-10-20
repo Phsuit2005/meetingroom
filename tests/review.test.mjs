@@ -10,3 +10,7 @@ test('rejection and cancellation preserve booking fields and record notes',()=>{
 test('stale status and past requests cannot be approved',()=>{assert.throws(()=>reviewReservation({a:{...pending,status:'cancelled'}},'a','approve','admin'));assert.throws(()=>reviewReservation({a:{...pending,reservation_date:'2000-01-01'}},'a','approve','admin'))});
 
 test('legacy room identifiers conflict when canonical room_key matches',()=>{const initial={a:{...pending,room_key:'room_001',room_id:'MR001'},b:{...pending,room_key:'room_001',room_id:'room_001',status:'approved'}};assert.throws(()=>reviewReservation(initial,'a','approve','admin','',100))});
+
+test("ongoing meeting can be approved until its end",()=>{const now=Date.parse("2099-01-01T10:30:00+07:00");assert.equal(reviewReservation({a:pending},"a","approve","admin","",now).a.status,"approved")});
+test("meeting cannot be approved at or after end time",()=>{for(const time of ["11:00","11:01"]){assert.throws(()=>reviewReservation({a:pending},"a","approve","admin","",Date.parse("2099-01-01T"+time+":00+07:00")))}});
+test("invalid end time cannot be approved",()=>assert.throws(()=>reviewReservation({a:{...pending,end_time:"invalid"}},"a","approve","admin","",100)));
