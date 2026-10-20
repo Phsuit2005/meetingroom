@@ -138,6 +138,100 @@
           ".validate": true
         }
       }
+    },
+    "satisfaction_surveys": {
+      ".read": "auth != null && auth.token.email_verified == true && (auth.token.email == 's67122250081@ssru.ac.th' || auth.token.email == 's67122250073@ssru.ac.th')",
+      "$uid": {
+        ".read": "auth != null && auth.uid == $uid",
+        ".write": "auth != null && auth.uid == $uid && newData.exists() && newData.child('user_id').val() == auth.uid && newData.child('user_email').val() == auth.token.email",
+        ".validate": "newData.hasChildren(['user_id','user_email','scores','comment','updated_at'])",
+        "user_id": {
+          ".validate": "newData.isString() && newData.val().length <= 128"
+        },
+        "user_email": {
+          ".validate": "newData.isString() && newData.val().length <= 254"
+        },
+        "comment": {
+          ".validate": "newData.isString() && newData.val().length <= 1000"
+        },
+        "updated_at": {
+          ".validate": "newData.isNumber() && newData.val() >= now - 60000 && newData.val() <= now + 60000"
+        },
+        "scores": {
+          ".validate": "newData.hasChildren(['ease','clarity','booking','speed','overall'])",
+          "$other": {
+            ".validate": false
+          },
+          "ease": {
+            ".validate": "newData.isNumber() && newData.val() >= 1 && newData.val() <= 5 && newData.val() % 1 == 0"
+          },
+          "clarity": {
+            ".validate": "newData.isNumber() && newData.val() >= 1 && newData.val() <= 5 && newData.val() % 1 == 0"
+          },
+          "booking": {
+            ".validate": "newData.isNumber() && newData.val() >= 1 && newData.val() <= 5 && newData.val() % 1 == 0"
+          },
+          "speed": {
+            ".validate": "newData.isNumber() && newData.val() >= 1 && newData.val() <= 5 && newData.val() % 1 == 0"
+          },
+          "overall": {
+            ".validate": "newData.isNumber() && newData.val() >= 1 && newData.val() <= 5 && newData.val() % 1 == 0"
+          }
+        },
+        "$other": {
+          ".validate": false
+        }
+      }
+    },
+    "issue_reports": {
+      ".read": "(auth != null && auth.token.email_verified == true && (auth.token.email == 's67122250081@ssru.ac.th' || auth.token.email == 's67122250073@ssru.ac.th')) || (auth != null && query.orderByChild == 'user_id' && query.equalTo == auth.uid)",
+      ".indexOn": [
+        "user_id"
+      ],
+      "$id": {
+        ".read": "auth != null && (data.child('user_id').val() == auth.uid || (auth != null && auth.token.email_verified == true && (auth.token.email == 's67122250081@ssru.ac.th' || auth.token.email == 's67122250073@ssru.ac.th')))",
+        ".write": "auth != null && newData.exists() && ((!data.exists() && newData.child('user_id').val() == auth.uid && newData.child('user_email').val() == auth.token.email && newData.child('status').val() == 'open' && newData.child('admin_note').val() == '' && newData.child('updated_by').val() == '' && newData.child('created_at').isNumber() && newData.child('created_at').val() >= now - 60000 && newData.child('created_at').val() <= now + 60000) || ((auth != null && auth.token.email_verified == true && (auth.token.email == 's67122250081@ssru.ac.th' || auth.token.email == 's67122250073@ssru.ac.th')) && data.exists() && newData.child('user_id').val() == data.child('user_id').val() && newData.child('user_email').val() == data.child('user_email').val() && newData.child('title').val() == data.child('title').val() && newData.child('description').val() == data.child('description').val() && newData.child('page').val() == data.child('page').val() && newData.child('steps').val() == data.child('steps').val() && newData.child('severity').val() == data.child('severity').val() && newData.child('created_at').val() == data.child('created_at').val() && newData.child('updated_by').val() == auth.token.email))",
+        ".validate": "newData.hasChildren(['user_id','user_email','title','description','page','steps','severity','status','admin_note','updated_by','created_at','updated_at'])",
+        "user_id": {
+          ".validate": "newData.isString() && newData.val().length <= 128"
+        },
+        "user_email": {
+          ".validate": "newData.isString() && newData.val().length <= 254"
+        },
+        "title": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 120"
+        },
+        "description": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 2000"
+        },
+        "page": {
+          ".validate": "newData.isString() && newData.val().length <= 200"
+        },
+        "steps": {
+          ".validate": "newData.isString() && newData.val().length <= 1000"
+        },
+        "admin_note": {
+          ".validate": "newData.isString() && newData.val().length <= 1000"
+        },
+        "updated_by": {
+          ".validate": "newData.isString() && newData.val().length <= 254"
+        },
+        "severity": {
+          ".validate": "newData.val() == 'low' || newData.val() == 'medium' || newData.val() == 'high'"
+        },
+        "status": {
+          ".validate": "newData.val() == 'open' || newData.val() == 'in_progress' || newData.val() == 'resolved'"
+        },
+        "created_at": {
+          ".validate": "newData.isNumber()"
+        },
+        "updated_at": {
+          ".validate": "newData.isNumber() && newData.val() >= now - 60000 && newData.val() <= now + 60000"
+        },
+        "$other": {
+          ".validate": false
+        }
+      }
     }
   }
 }

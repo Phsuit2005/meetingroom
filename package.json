@@ -9,7 +9,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "rules:generate": "node scripts/generate-database-rules.mjs",
-    "test": "node --test tests/booking.test.mjs tests/review.test.mjs tests/room-availability.test.mjs"
+    "test": "node --test tests/booking.test.mjs tests/review.test.mjs tests/room-availability.test.mjs tests/feedback.test.mjs"
   },
   "dependencies": {
     "firebase": "^12.18.0",

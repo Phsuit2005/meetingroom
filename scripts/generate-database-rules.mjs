@@ -30,5 +30,34 @@ const projection={'.write':'auth != null && newData.exists() && (('+admin+') || 
 for(const k of projectionFields)projection[k]={'.validate':true};
 rules.rules.room_bookings={'.read':true,'.indexOn':['room_key'],'$id':projection};
 
+
+const stamp="newData.isNumber() && newData.val() >= now - 60000 && newData.val() <= now + 60000";
+const bounded=max=>({'.validate':"newData.isString() && newData.val().length <= "+max});
+const score={'.validate':"newData.isNumber() && newData.val() >= 1 && newData.val() <= 5 && newData.val() % 1 == 0"};
+const scoreKeys=['ease','clarity','booking','speed','overall'];
+rules.rules.satisfaction_surveys={'.read':admin,'$uid':{
+ '.read':'auth != null && auth.uid == $uid',
+ '.write':"auth != null && auth.uid == $uid && newData.exists() && newData.child('user_id').val() == auth.uid && newData.child('user_email').val() == auth.token.email",
+ '.validate':"newData.hasChildren(['user_id','user_email','scores','comment','updated_at'])",
+ user_id:bounded(128),user_email:bounded(254),comment:bounded(1000),updated_at:{'.validate':stamp},
+ scores:{'.validate':"newData.hasChildren(['"+scoreKeys.join("','")+"'])",'$other':{'.validate':false},...Object.fromEntries(scoreKeys.map(k=>[k,score]))},
+ '$other':{'.validate':false}
+}};
+const issueFields=['user_id','user_email','title','description','page','steps','severity','created_at'];
+const issueSame=issueFields.map(k=>"newData.child('"+k+"').val() == data.child('"+k+"').val()").join(' && ');
+const issueCreate="!data.exists() && newData.child('user_id').val() == auth.uid && newData.child('user_email').val() == auth.token.email && newData.child('status').val() == 'open' && newData.child('admin_note').val() == '' && newData.child('updated_by').val() == '' && newData.child('created_at').isNumber() && newData.child('created_at').val() >= now - 60000 && newData.child('created_at').val() <= now + 60000";
+rules.rules.issue_reports={
+ '.read':'('+admin+") || (auth != null && query.orderByChild == 'user_id' && query.equalTo == auth.uid)",
+ '.indexOn':['user_id'],
+ '$id':{
+ '.read':'auth != null && (data.child(\'user_id\').val() == auth.uid || ('+admin+'))',
+ '.write':'auth != null && newData.exists() && (('+issueCreate+') || (('+admin+') && data.exists() && '+issueSame+" && newData.child('updated_by').val() == auth.token.email))",
+ '.validate':"newData.hasChildren(['user_id','user_email','title','description','page','steps','severity','status','admin_note','updated_by','created_at','updated_at'])",
+ user_id:bounded(128),user_email:bounded(254),title:{'.validate':"newData.isString() && newData.val().length > 0 && newData.val().length <= 120"},description:{'.validate':"newData.isString() && newData.val().length > 0 && newData.val().length <= 2000"},page:bounded(200),steps:bounded(1000),admin_note:bounded(1000),updated_by:bounded(254),
+ severity:{'.validate':"newData.val() == 'low' || newData.val() == 'medium' || newData.val() == 'high'"},
+ status:{'.validate':"newData.val() == 'open' || newData.val() == 'in_progress' || newData.val() == 'resolved'"},
+ created_at:{'.validate':'newData.isNumber()'},updated_at:{'.validate':stamp},'$other':{'.validate':false}
+}};
+
 fs.writeFileSync(new URL('../database.rules.json',import.meta.url),JSON.stringify(rules,null,2)+'\n');
 console.log('Generated database rules for '+admins.length+' verified admin emails');
